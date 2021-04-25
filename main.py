@@ -9,25 +9,25 @@ def hello_world():
   ms_num = datetime.now().microsecond
   return render_template('index.html', ms_num=ms_num)
 
-@app.route('/api/events')
-def api_events():
+@app.route('/api/records')
+def api_records():
   return jsonify(database.list())
 
-@app.route('/api/events/<event_id>', methods=['DELETE'])
-def api_events_delete(event_id):
-  database.delete(event_id)
+@app.route('/api/records/<record_id>', methods=['DELETE'])
+def api_records_delete(record_id):
+  database.delete(record_id)
   return ""
 
-@app.route('/api/events', methods=['POST'])
-def api_events_create():
+@app.route('/api/records', methods=['POST'])
+def api_records_create():
   location = request.json['location']
-  storedEvent = database.add(location)
-  return jsonify(storedEvent), 201
+  storedRecord = database.add(location)
+  return jsonify(storedRecord), 201
 
 if __name__ == '__main__':
   database.clear()
 
-  # Initial last seen events
+  # Initial last seen records
   database.add('Fenway Park')
   database.add('Faneuil Hall')
   database.add('Google Cambridge Office')

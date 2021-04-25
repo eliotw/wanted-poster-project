@@ -2,25 +2,25 @@ from replit import db
 
 idCounter = 1
 
-# Adds an event
-def add(event_location):
+# Add a record
+def add(location):
   id = get_id()
-  event = {
+  record = {
     "id": id,
-    "location": event_location
+    "location": location
   }
-  db.set(id, event)
-  return event
+  db.set(id, record)
+  return record
 
-# Deletes an event by id
-def delete(event_id):
-  del db[event_id]
+# Deletes an record by id
+def delete(record_id):
+  del db[record_id]
 
-# Returns a list of events
+# Returns a list of records
 def list():
   values = db.values();
-  events = [value.value for value in values]
-  return events
+  records = [value.value for value in values]
+  return records
 
 def clear():
   keys = db.keys()
