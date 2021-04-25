@@ -1,7 +1,6 @@
 const lastSeenForm = document.getElementById('last-seen-form');
+// STEP 2: Add `handleAddRecord` event listener on form's submit events
 lastSeenForm.addEventListener('submit', handleAddRecord);
-
-fetchRecords();
 
 // Helper functions
 function handleAddRecord(event) {
@@ -9,14 +8,14 @@ function handleAddRecord(event) {
 
   const record = getRecordFromForm(event);
   
-  saveRecord(record)
-    .then((newRecord) => addLastSeenElement(newRecord));
+  // STEP 3: Replace alert function with addLastSeen
+  addLastSeen(record);
 
-  // Clear out value from input field
+  // STEP 6: Clear text input
   document.getElementById('last-seen-location').value="";
 }
 
-function addLastSeenElement(record) {
+function addLastSeen(record) {
   const list = document.getElementById("last-seen-list");
 
   const item = createLastSeenItem(record);
@@ -25,9 +24,8 @@ function addLastSeenElement(record) {
 
 function createLastSeenItem(record) {
   const item = document.createElement('li');
-  item.id = `last-seen-${record.id}`;
 
-  // Add location text to item
+  // STEP 4: Create paragraph element and add to list item
   const p = document.createElement('p');
   p.textContent = record.location;
   item.appendChild(p);
@@ -37,40 +35,15 @@ function createLastSeenItem(record) {
   button.type = 'image';
   button.src = '/static/img/delete.png';
   button.className = 'delete-button';
-  button.onclick = () => {
-    deleteRecord(record.id).then(() => item.remove());
-  }
+  // STEP 5: Add onclick event to remove list item
+  button.onclick = () => { item.remove() };
   item.append(button);
 
   return item;
-}
-
-function deleteRecord(recordId) {
-  return fetch(`/api/records/${recordId}`, {
-      method: 'DELETE'
-    });
-}
-
-function saveRecord(record) {
-  return fetch('/api/records', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(record)
-  }).then((response) => response.json());
 }
 
 function getRecordFromForm(event) {
   const formData = new FormData(event.currentTarget);
   const data = Object.fromEntries(formData.entries());
   return data;
-}
-
-function fetchRecords() {
-  fetch('/api/records')
-    .then((response) => response.json())
-    .then((json) => {     
-      json.forEach((record) => {
-        addLastSeenElement(record);
-      });
-    })
 }
