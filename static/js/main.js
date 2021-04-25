@@ -1,5 +1,5 @@
 function addLastSeenElement(event) {
-  const list = document.getElementById("last-seen");
+  const list = document.getElementById("last-seen-list");
 
   const item = document.createElement('li');
   item.id = `last-seen-${event.id}`;
@@ -20,6 +20,9 @@ function addLastSeenElement(event) {
   item.append(button);
 
   list.appendChild(item);
+
+  // Clear out value from input field
+  document.getElementById('last-seen-location').value="";
 }
 
 const lastSeenForm = document.getElementById('last-seen-form');
